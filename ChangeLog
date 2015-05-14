@@ -1,3 +1,8 @@
+1.9:
+	- rewrote configure, it better finds berkeley
+	  db or gdbm.
+	- put the source on github.
+
 1.8:
 	- configure didn't take existing $LDFLAGS, $CPPFLAGS
 	  into account.

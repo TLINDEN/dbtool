@@ -247,12 +247,12 @@ and it's attributes.
 
 =head1 REPORTING BUGS
 
-Report bugs to <tlinden@cpan.org>.
+Report bugs on L<https://github.com/tlinden/dbtool/issues> or mail to <tlinden@cpan.org>.
 
 
 =head1 COPYRIGHT
 
-Copyright (c) 2000-2001 T.v. Dein.
+Copyright (c) 2000-2015 T.v. Dein.
 This is free software; see the source for copying conditions.  There is NO warranty;
 not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -274,7 +274,7 @@ The homepage of the B<PCRE> library.
 
 =head1 AVAILABILITY
 
-B<dbtool> can be downloaded from B<http://www.daemon.de/dbtool>.
+B<dbtool> can be downloaded from B<http://www.daemon.de/DBTOOL>.
 
 
 =head1 AUTHORS
@@ -284,15 +284,5 @@ I<T.v. Dein <tlinden@cpan.org>>
 
 
 =cut
-
-
-
-
-
-
-
-
-
-
 
 
