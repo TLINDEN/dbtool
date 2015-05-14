@@ -1,0 +1,80 @@
+README for dbtool 1.8 (13/04/2015)
+============================================================
+
+dbtool can be used to store and retrieve data in a key/value
+format in a hash database. Perl compatible regular expressions
+are supported both for storing and retrieving of data. It's
+main advantages are the ability to maintain huge amounts of
+data and speed.
+
+ 
+
+
+Requirements
+============================================================
+
+You need either the GNU gdbm library or the Berkeley database
+system. You can find gdbm at:
+  http://www.gnu.org/software/gdbm/gdbm.html
+And the berkeley library at: http://www.sleepycat.com.
+
+
+
+Installation
+============================================================
+
+For installation run:
+
+% ./configure
+% make
+% su
+# make install
+
+You can supply some additional parameters to configure,
+type ./configure --help for details.
+
+
+
+
+Documentation
+============================================================
+
+After successfully installation read the installed man-
+page:
+
+% man dbtool
+
+
+
+
+License and Disclaimer
+============================================================
+
+dbtool is Copyright (c) 2001-2015 by T.v. Dein. dbtool may be
+used and distributed under the terms of the GNU General Public
+License. All other brand and product names are trademarks,
+registered trademarks or service marks of their respective
+holders.
+
+These programs are distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this distribution; if not, write to the 
+  Free Software Foundation, Inc.
+  59 Temple Place
+  Suite 330
+  Boston, MA 02111
+  USA
+
+
+
+
+
+============================================================
+
+T.v. Dein <tlinden@cpan.org>
+http://www.daemon.de/dbtool
+

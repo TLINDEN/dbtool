@@ -1,0 +1,112 @@
+#!/bin/sh
+#
+# This is a little interactive tool which helps you
+# to maintain your accounts on one place.
+#
+# It uses an encrypted database for protecting the
+# account list. The tool does not work with temporary
+# files for security reasons.
+#
+# Just execute it. It will show you a little menu of
+# all available commands. That's really easy :-)
+#
+# T.v. Dein <tlinden@cpan.org>
+
+
+#
+# the account database
+db=~/.accdb
+
+#
+# check if dbtool version is 1.4 or higher
+version=`dbtool -V 2>&1 | sed 's/[a-zA-Z .]*//g'`
+if [ "x$version" != "x" ]; then
+    let res="$version < 14"
+    if [ "x$res" = "x1" ]; then
+	echo "This version of dbtool does not support encryption!"
+	exit 1
+    fi
+else
+    echo "dbtool is not installed!"
+    exit 1
+fi
+
+#
+# get the passphrase
+echo -n "Enter passphrase: "
+read PW
+
+if [ "x$PW" = "x" ]; then
+    echo "empty passphrase!"
+    exit -1
+fi
+
+#
+# store it in a local environment variable,
+# so it will not appear in the process list and
+# dbtool itself will not ask for it
+export DB_PASSPHRASE=$PW
+
+
+#
+# the silly menu
+function menu {
+    echo
+    echo -n "[L]ist [N]ew [S]earch [Q]uit> "
+}
+
+
+#
+# go
+echo
+menu
+
+while :
+do
+    read command
+
+    if [ "x$command" = "xL" -o "x$command" = "xl" ]; then
+	echo
+	if [ -e $db ]; then
+	    #
+	    # just dump all entries out. Use a custom output
+	    # separator for better formatting with sed :-)
+	    dbtool -d $db -p -D -F "¶" | sed 's/¶/  =>   /'
+	fi
+    elif [ "x$command" = "xN" -o "x$command" = "xn" ]; then
+	echo
+	echo -n "Enter entry name: "
+	read name
+	if [ "x$name" = "x" ]; then
+	    echo "empty name!"
+	else
+	    echo -n "Enter username: "
+	    read user
+	    echo -n "Enter password: "
+	    read pass
+	    #
+	    # create a new entry, separate the key and the value
+	    # using the pipe character, overwrite existing entry
+	    echo "$name| Username: $user, Password: $pass" \
+		| dbtool -p -i -f -d $db -F "|"
+	    echo "entry $name inserted."
+	fi
+    elif [ "x$command" = "xS" -o "x$command" = "xs" ]; then
+	echo -n "Enter search string: "
+	read string
+	#
+	# search for the given key
+	dbtool -p -d $db -s -k $string
+    elif [ "x$command" = "xQ" -o "x$command" = "xq" ]; then
+	echo
+	echo "Thanks for the fish."
+	echo
+	exit 0
+    fi
+
+    menu
+done
+
+#
+# clear the environment variable. just in case...
+unset DB_PASSPHRASE

@@ -1,0 +1,11 @@
+uback is a backup script which uses dbtool to
+maintain catalog databases of the files which
+have backed up.
+
+Download uback from the following location:
+
+ ftp://www.0x49.org/scip/Scripts/uback-1.2.tar.gz
+
+
+
+T.v. Dein <tlinden@cpan.org>

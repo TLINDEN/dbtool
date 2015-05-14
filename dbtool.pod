@@ -1,0 +1,298 @@
+# -*-cperl-*-
+=head1 NAME
+
+dbtool - a tool for storing key/value pairs in a hash database
+
+=head1 SYNOPSIS
+
+ dbtool -d database [DirusSfwVhtRFpP] [-k key] [-v value]
+
+=head1 DESCRIPTION
+
+This manual page documents the program B<dbtool>. B<dbtool> can be used
+to store and retrieve data in a key/value format in
+a hash database. Perl compatible regular expressions are supported
+both for storing and retrieving of data. It's main advantages are the
+ability to maintain huge amounts of data and speed.
+
+=head1 OPTIONS
+
+=over
+
+=item B<-D>
+
+Dump all key/value pairs of the database. Keys and values will be
+separated by whitespace or by the character specified by B<-F>.
+
+=item B<-f>
+
+Enable B<force mode>, which has the following causes:
+
+=over
+
+=item I<insert>
+
+Keys (and the associated value) will be overwritten if it already
+exists.
+
+=item I<update>
+
+Key/value will be created if it does not exist.
+
+=back
+
+=item B<-F> -I<separator>
+
+Optional field separator. The default separator is one whitespace.
+Use B<-F> in conjunction with B<-D> to specify an alternate output
+field separator or with B<-i> if data is read in from I<STDIN> (without
+B<-k> and B<-v>).
+
+=item B<-h>
+
+Prints out a short help message to I<STDERR> and exits.
+
+=item B<-i>
+
+Insert data. The B<-k> and B<-v> options are required. You will get an error
+message if the key already exists. Use B<-f> to avoid such a message
+and let B<dbtool> overwrite the key instead.
+ If both key (B<-k>) and value (B<-v>) are not provided, B<dbtool>
+will read in the data from I<STDIN>. The default input separator
+is one whitespace. The first field (separated by whitespace) will be
+considered as the key and the rest of the input line will be considered
+as the value associated with the key. You can provide an alternate
+input field separator using the option B<-F>.
+ It is also possible to separate the key and value of an input line
+using a regular expression with the B<-t> option(see below).
+
+=item B<-k> I<key>
+
+Use I<key> as the key. Use B<-k> in conjunction with B<-i>, B<-u>, B<-r>,
+B<-s> or B<-S>.
+
+=item B<-r>
+
+Remove data. Only the key to be removed (B<-k>) is required.
+
+=item B<-R>
+
+Reverse the meaning of the expression provided with B<-t>. By default
+B<dbtool> will use the first match as the key and the second one as
+the value. With B<-R> this will be reversed.
+
+=item B<-s>
+
+Search for a key specified by B<-k>. The associated value will be printed
+to I<STDOUT>. You can use B<-w> to get the key too separated by whitespace
+or by the parameter of B<-F>. You can only search for keys, not for values.
+
+=item B<-S>
+
+Search for a key. The parameter to the option B<-k> will be considered
+as a perl compatible regular expression. It is possible to get multiple
+results, which will be printed to I<STDOUT> separated by newline. Otherwise
+B<-S> behaves like B<-s>.
+
+=item B<-t> I<expression>
+
+Use I<expression> to decide which part of an input line has to be used as the
+key and which one as the value. The regular expression must contain two
+parts surrounded by round parenthesis'. See the section EXAMPLES for some
+uses of B<-t>. This option can only be used in conjunction with B<-i> without
+B<-k> and B<-v>.
+
+=item B<-u>
+
+Update data. A key (B<-k>) and a value (B<-v>) is required. You will get an
+error message if the key does not exist. You can use the option B<-f> to avoid
+such a message and to insert the data if it does not exist instead.
+
+=item B<-p>
+
+Use encrypted database. dbtool will ask you for the passphrase,
+unless the environment variable DB_PASSPHRASE is set.
+
+
+=item B<-P> I<passphrase>
+
+Use encrypted database. Specify the passphrase on the commandline.
+
+=item B<-v> I<value>
+
+Use I<value> as the value associated with some key. Use B<-v> in conjunction
+with B<-i>, B<-u> or B<-r>.
+
+=item B<-V>
+
+Print out the version of B<dbtool>.
+
+=item B<-w>
+
+Print search results together with the associated keys separated by whitespace
+or the parameter of B<-F>.
+
+=back
+
+
+
+=head1 EXPRESSIONS
+
+Regular expressions are provided using the B<PCRE Library>. It supports most of
+the features which perl provides. See the section »DIFFERENCES FROM PERL« in the PCRE
+manpage. You can also take a look to the perl regular expression man page with
+the following command:
+
+ perldoc perlre
+
+(which requires perl to be installed).
+
+
+=head1 ENCRYPTION
+
+As of version 1.4 B<dbtool> supports encrypted databases. See the descriptions
+of the options B<-p> and B<-P>. The algorithm used for encryption is B<Rijndael>
+block cipher encryption.
+
+B<dbtool> does not use the passphrase which the user supplies. It uses instead
+the MD5 digest of the passphrase as the encryption key.
+
+Please note, that B<dbtool> itself does not distinguish between encrypted or
+unencrypted databases. That means, you will get strange results if you try
+to access an encrypted database without the options B<-p> or B<-P> being set.
+
+B<dbtool> by default will only encrypt the values of a database, not the keys.
+This might change in future versions.
+
+
+
+=head1 EXAMPLES
+
+=over
+
+=item
+
+ dbtool -d test.db -i -k "test" -v "blah blah blah"
+
+Insert the key  "test" which is associated to the value
+"blah blah blah" into test.db.
+
+
+=item
+
+ dbtool -d test.db -u -f -k "test" -v "blubber"
+
+Update the key "test" even if it does not exist with "blubber".
+
+
+=item
+
+ dbtool -d test.db -r -k "test"
+
+Remove the entry to which the key "test" points.
+
+
+=item
+
+ dbtool -d test.db -S -k "^\d\d"
+
+Search for all keys which start at least with two digits.
+
+
+=item
+
+ dbtool -d test.db -D | grep -i "tom"
+
+Dump out the whole database test.db and search for "tom". This 
+method allows you to search for values.
+
+
+=item
+
+ cat /etc/passwd | dbtool -d test.db -i -f -t "^(.+?):.*:(\d+?):$"
+
+In this example we store the contents of the file passwd in
+a hash database. The username will be the key of an entry and
+the userid will be the associated value. The key must be any character
+from the beginning of a line until the first appearance of a colon.
+The value must be one or more digits after the 2nd colon until the next
+colon:
+
+ apache:x:48:48:Apache:/var/www:/bin/false
+ ^^^^^^   ^^
+ |        |
+ |        o--- value
+ |
+ o------------ key
+
+
+=item
+
+ find /home -ls | dbtool -d catalog.dbm -i -f -R -t "^(.+?) (\/.*)$"
+
+In this example the output of the unix command 'find /home -ls' will
+be used as input for B<dbtool>. The key for an entry will begin on the
+first appearance of a slash character until the end of the line. Everything
+in front of it will be the value (because of the B<-R>):
+
+ 302  12 -rw------- 1 scip  scip    9734 Feb 11  2000 /home/scip/D/lrk5/README
+ (---------------[ value ]--------------------------) (--------[ key ]-------)
+
+I use this command in my backup script for creating a catalog of all saved files
+and it's attributes.
+
+ 
+=back
+
+
+=head1 REPORTING BUGS
+
+Report bugs to <tlinden@cpan.org>.
+
+
+=head1 COPYRIGHT
+
+Copyright (c) 2000-2001 T.v. Dein.
+This is free software; see the source for copying conditions.  There is NO warranty;
+not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+=head1 SEE ALSO
+
+=over
+
+=item B<perldoc perlre>
+
+Perl regular expressions.
+
+=item B<http://www.pcre.org>
+
+The homepage of the B<PCRE> library.
+
+=back
+
+
+=head1 AVAILABILITY
+
+B<dbtool> can be downloaded from B<http://www.daemon.de/dbtool>.
+
+
+=head1 AUTHORS
+
+I<T.v. Dein <tlinden@cpan.org>>
+
+
+
+=cut
+
+
+
+
+
+
+
+
+
+
+
+
