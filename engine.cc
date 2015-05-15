@@ -260,7 +260,7 @@ void Engine::regexp() {
 /*
  * Insert data into the db
  */
-void Engine::from_stdin() {
+void Engine::from_input() {
   init();
 #ifdef HAVE_BERKELEY
   int err;

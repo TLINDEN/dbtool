@@ -20,9 +20,8 @@ db=~/.accdb
 #
 # check if dbtool version is 1.4 or higher
 version=`dbtool -V 2>&1 | sed 's/[a-zA-Z .]*//g'`
-if [ "x$version" != "x" ]; then
-    let res="$version < 14"
-    if [ "x$res" = "x1" ]; then
+if test -n "$version"; then
+    if test $version -lt 14; then
 	echo "This version of dbtool does not support encryption!"
 	exit 1
     fi
@@ -36,7 +35,7 @@ fi
 echo -n "Enter passphrase: "
 read PW
 
-if [ "x$PW" = "x" ]; then
+if test -z "$PW"; then
     echo "empty passphrase!"
     exit -1
 fi
@@ -65,7 +64,8 @@ while :
 do
     read command
 
-    if [ "x$command" = "xL" -o "x$command" = "xl" ]; then
+    case $command in
+      l|L)
 	echo
 	if [ -e $db ]; then
 	    #
@@ -73,7 +73,7 @@ do
 	    # separator for better formatting with sed :-)
 	    dbtool -d $db -p -D -F "¶" | sed 's/¶/  =>   /'
 	fi
-    elif [ "x$command" = "xN" -o "x$command" = "xn" ]; then
+      n|N)
 	echo
 	echo -n "Enter entry name: "
 	read name
@@ -91,18 +91,18 @@ do
 		| dbtool -p -i -f -d $db -F "|"
 	    echo "entry $name inserted."
 	fi
-    elif [ "x$command" = "xS" -o "x$command" = "xs" ]; then
+      s|S)
 	echo -n "Enter search string: "
 	read string
 	#
 	# search for the given key
 	dbtool -p -d $db -s -k $string
-    elif [ "x$command" = "xQ" -o "x$command" = "xq" ]; then
+      q|Q)
 	echo
 	echo "Thanks for the fish."
 	echo
 	exit 0
-    fi
+    esac
 
     menu
 done

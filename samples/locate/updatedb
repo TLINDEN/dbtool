@@ -9,11 +9,7 @@
 # to search for a certain string.
 #
 
-dbtool="/usr/bin/dbtool";
-find="/usr/bin/find";
-db="/var/local/locate.db";
-egrep="/bin/egrep";
-cp="/bin/cp"
+db="/var/db/locate.db";
 
-$cp /dev/null $db;
-$find / -ls | $egrep -v "^\/proc|dev|tmp" | $dbtool -d $db -i -f -R -t "^(.+?) (\/.*)$";
+echo -n > $db
+find / -ls | egrep -v "^\/proc|dev|tmp" | dbtool -d $db -i -f -R -t "^(.+?) (\/.*)$";

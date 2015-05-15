@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
       engine.dump();
       break;
     case 'I':
-      engine.from_stdin();
+      engine.from_input();
       break;
     case 's':
       /* select */

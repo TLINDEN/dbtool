@@ -11,14 +11,11 @@
 # compliant regular expression.
 #
 
-dbtool="/usr/bin/dbtool";
-find="/usr/bin/find";
-db="/var/local/locate.db";
-sort="/bin/sort";
-regex=$1;
+db="/var/db/locate.db"
+regex=$1
 
-if [ "x$regex" != "x" ]; then
-    $dbtool -d $db -S -k $regex -w -R;
+if test -n "$regex"; then
+    dbtool -d $db -S -k $regex -w -R
 else
-    echo "Usage: locate <expression>";
+    echo "Usage: locate <expression>"
 fi

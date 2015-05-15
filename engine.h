@@ -117,7 +117,7 @@ class Engine {
   void update();
   void remove();
   void select();
-  void from_stdin();
+  void from_input();
   void   dump();
   void regexp();
 };
