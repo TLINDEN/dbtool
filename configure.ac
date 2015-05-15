@@ -104,8 +104,31 @@ PCRE="no"
 
 
 # configure args
+AC_ARG_WITH([berkeley],
+    [AS_HELP_STRING([--with-berkeley],
+	            [Use berkeley library ])])
+
+if test "x$with_berkeley" = "xno"; then
+  BERKELEY=no
+  GDBM=yes
+elif test "x$with_berkeley" = "xyes"; then
+  BERKELEY=yes
+  GDBM=no
+fi
+
+
 AC_ARG_WITH([gdbm],
-    [AS_HELP_STRING([--with-gdbm=DIR],
+    [AS_HELP_STRING([--with-gdbm],
+	            [Use GNU gdbm library ])])
+
+if test "x$with_gdbm" = "xno"; then
+  GDBM=no
+elif test "x$with_gdbm" = "xyes"; then
+  GDBM=yes
+fi
+
+AC_ARG_WITH([gdbm-dir],
+    [AS_HELP_STRING([--with-gdbm-dir=DIR],
 	            [Use GNU gdbm library in DIR])],
     [
 	AC_MSG_CHECKING([checking $with_gdbm_dir/include/gdbm.h presence])
@@ -114,14 +137,16 @@ AC_ARG_WITH([gdbm],
 	    CFLAGS="$CXXFLAGS"
 	    LDFLAGS="-L$with_gdbm_dir/lib $LDFLAGS"
 	    LIBS="-lgdbm"
+            GDBM=yes
 	    AC_MSG_RESULT([yes])
 	else
+            GDBM=no
 	    AC_MSG_RESULT([no])
 	fi
     ])
 
-AC_ARG_WITH([pcre],
-    [AS_HELP_STRING([--with-pcre=DIR],
+AC_ARG_WITH([pcre-dir],
+    [AS_HELP_STRING([--with-pcre-dir=DIR],
 	            [Use GNU pcre library in DIR])],
     [
 	AC_MSG_CHECKING([checking $with_pcre_dir/include/pcre.h presence])
