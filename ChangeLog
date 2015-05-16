@@ -1,6 +1,6 @@
 1.9.1:
-	- fixed messed up configure flags, backward
-	  compatible again
+	- fixed messed up configure flags, backward, be compatible again
+	- fixed berkeley m4 makro, again
 	- removed bashisms in samples
 	- applied patch of freebsd port
 

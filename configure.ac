@@ -2,7 +2,7 @@
 
 AC_PREREQ(2.61)
 
-define([dbtoolversion], esyscmd([sh -c "cat VERSION|head -1"]))
+define([dbtoolversion], esyscmd([sh -c "cat VERSION"]))dnl
 
 # what we are compiling
 AC_INIT([dbtool], [dbtoolversion], [tlinden@cpan.org])
@@ -211,7 +211,7 @@ if test "$GDBM" = "no"; then
      export LDFLAGS
      export LIBS
      export CXXFLAGS
-    AX_BERKELEY_DB_CXX([4.0.0],[
+    AX_BERKELEY_DB_CXX([4],[
 	    LDFLAGS="$DB_CXX_LIBS $LDFLAGS"
 	    BERKELEY="yes"
 	    ],[BERKELEY="no"])

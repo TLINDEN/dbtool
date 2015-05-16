@@ -75,11 +75,11 @@ AC_DEFUN([AX_BERKELEY_DB_CXX],
       AC_MSG_CHECKING([for Berkeley DB (C++)])
   else
       minvermajor=`echo $minversion | cut -d. -f1`
-      minverminor=`echo $minversion | cut -d. -f2`
-      minverpatch=`echo $minversion | cut -d. -f3`
-      minvermajor=${minvermajor:-0}
-      minverminor=${minverminor:-0}
-      minverpatch=${minverpatch:-0}
+      minverminor=`echo $minversion | cut -d. -f2 -s`
+      minverpatch=`echo $minversion | cut -d. -f3 -s`
+      if test -z "$minvermajor"; then minvermajor=0; fi
+      if test -z "$minverminor"; then minverminor=0; fi
+      if test -z "$minverpatch"; then minverpatch=0; fi
       AC_MSG_CHECKING([for Berkeley DB (C++) >= $minvermajor.$minverminor.$minverpatch])
   fi
 
@@ -95,12 +95,12 @@ AC_DEFUN([AX_BERKELEY_DB_CXX],
 	  for version in "${major}.${minor}" "${major}${minor}"; do
 
 	      try_libs="-ldb_cxx-${version}%-ldb-${version} -ldb${version}_cxx%-ldb${version}"
-	      try_headers="db$version/db_cxx.h db`echo $version | sed -e 's,\..*,,g'`/db_cxx.h"
-
+	      try_headers="db${major}.${minor}/db_cxx.h db${major}${minor}/db_cxx.h db${major}/db_cxx.h"
 	      for db_cxx_hdr in $try_headers ; do
 		  for db_cxx_lib in $try_libs; do
 		    db_cxx_lib="$libdbdir `echo "$db_cxx_lib" | sed 's/%/ /g'`"
 		    LIBS="$old_LIBS $db_cxx_lib"
+		    #echo "Trying <$db_cxx_lib> <$db_cxx_hdr>"
 		    if test -z $DB_CXX_HEADER ; then
 		      AC_LINK_IFELSE(
 			  [AC_LANG_PROGRAM(
