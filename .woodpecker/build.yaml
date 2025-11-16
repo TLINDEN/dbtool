@@ -14,4 +14,5 @@ steps:
       - apk update
       - apk add --no-cache bash build-base words-en gdb perl autoconf automake pcre2
       - ./autogen.sh
-      
+      - ./configure
+      - make
