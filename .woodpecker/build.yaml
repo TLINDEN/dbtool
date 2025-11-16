@@ -1,0 +1,17 @@
+matrix:
+  platform:
+    - linux/amd64
+
+labels:
+  platform: ${platform}
+    
+steps:
+  build-n-test:
+    when:
+      event: [push]
+    image: alpine:latest
+    commands:
+      - apk update
+      - apk add --no-cache bash build-base words-en gdb perl autoconf automake pcre2
+      - ./autogen.sh
+      

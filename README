@@ -20,8 +20,11 @@ And the berkeley library at: http://www.sleepycat.com.
 
 
 
-Installation
+Installation from source
 ============================================================
+
+If you build  directly from the git repo, you'll  need to generate the
+configure script first with 'autogen.sh'.
 
 For installation run:
 

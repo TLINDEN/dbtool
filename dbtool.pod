@@ -139,7 +139,7 @@ or the parameter of B<-F>.
 =head1 EXPRESSIONS
 
 Regular expressions are provided using the B<PCRE Library>. It supports most of
-the features which perl provides. See the section »DIFFERENCES FROM PERL« in the PCRE
+the features which perl provides. See the section "DIFFERENCES FROM PERL" in the PCRE
 manpage. You can also take a look to the perl regular expression man page with
 the following command:
 
@@ -247,7 +247,7 @@ and it's attributes.
 
 =head1 REPORTING BUGS
 
-Report bugs on L<https://github.com/tlinden/dbtool/issues> or mail to <tlinden@cpan.org>.
+Report bugs on L<https://codeberg.org/scip/dbtool/issues> or mail to <tlinden@cpan.org>.
 
 
 =head1 COPYRIGHT
