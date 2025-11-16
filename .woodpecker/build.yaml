@@ -12,7 +12,7 @@ steps:
     image: alpine:latest
     commands:
       - apk update
-      - apk add --no-cache bash build-base words-en gdb perl autoconf automake pcre2 gdbm gdbm-dev pkgconfig
+      - apk add --no-cache bash build-base words-en gdb perl autoconf automake pcre pcre-dev gdbm gdbm-dev pkgconfig
       - ./autogen.sh
       - ./configure
       - make
