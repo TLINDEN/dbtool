@@ -3,6 +3,10 @@
 
 # README for dbtool 1.9.1 (21/11/2025)
 
+> [!CAUTION]
+> This software is now being maintained on [Codeberg](https://codeberg.org/scip/dbtool/).
+
+
 dbtool can be used to store and retrieve data in a key/value
 format in a hash database. Perl compatible regular expressions
 are supported both for storing and retrieving of data. It's
