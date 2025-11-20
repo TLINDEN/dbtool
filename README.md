@@ -1,3 +1,6 @@
+[![status-badge](https://ci.codeberg.org/api/badges/15585/status.svg)](https://ci.codeberg.org/repos/15585)
+[![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://codeberg.org/scip/dbtool/blob/master/LICENSE)
+
 # README for dbtool 1.9.1 (21/11/2025)
 
 dbtool can be used to store and retrieve data in a key/value
