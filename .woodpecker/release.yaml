@@ -10,10 +10,11 @@ steps:
     image: alpine:latest
     commands:
       - apk update
-      - apk add --no-cache bash build-base
-      - make static
-      - file dicepwgen_static
-      - mv dicepwgen_static dicepwgen-linux-amd64
+      - apk add --no-cache bash build-base words-en gdb perl pcre2 pcre2-dev gdbm gdbm-dev pkgconfig meson ninja
+      - meson setup --reconfigure --prefer-static build
+      - ninja -C build
+      - file build/dbtool
+      - mv build/dbtool dbtool-linux-amd64
 
   release:
     image: alpine:latest
@@ -25,4 +26,4 @@ steps:
     commands:
       - apk update
       - apk add --no-cache bash httpie jq git
-      - .woodpecker/release.sh dicepwgen-linux-amd64
+      - .woodpecker/release.sh dbtool-linux-amd64

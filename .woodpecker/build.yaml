@@ -6,13 +6,28 @@ labels:
   platform: ${platform}
     
 steps:
-  build-n-test:
+  build-berkeley:
     when:
       event: [push]
     image: alpine:latest
     commands:
       - apk update
-      - apk add --no-cache bash build-base words-en gdb perl autoconf automake pcre pcre-dev gdbm gdbm-dev pkgconfig
-      - ./autogen.sh
-      - ./configure
-      - make
+      - apk add --no-cache bash build-base words-en gdb perl pcre2 pcre2-dev db db-dev pkgconfig meson ninja
+      - meson setup --reconfigure build
+      - ninja -C build
+      - rm -f test.db
+      - build/dbtool -d test.db -i -k "test" -v "blah blah blah"
+      - build/dbtool -d test.db -D | grep blah
+
+  build-gdbm:
+    when:
+      event: [push]
+    image: alpine:latest
+    commands:
+      - apk update
+      - apk add --no-cache bash build-base words-en gdb perl pcre2 pcre2-dev gdbm gdbm-dev pkgconfig meson ninja
+      - meson setup --reconfigure build
+      - ninja -C build
+      - rm -f test.db
+      - build/dbtool -d test.db -i -k "test" -v "blah blah blah"
+      - build/dbtool -d test.db -D | grep blah

@@ -79,18 +79,22 @@ string cipher::encrypt(const string& source) {
   rijn.init(Rijndael::CBC,  Rijndael::Encrypt, key, Rijndael::Key32Bytes);
 
   /* encrypt the source */
-  unsigned char output[size + 16];
+  unsigned char *output = (unsigned char *)malloc(size + 16);
   int res = rijn.padEncrypt(plainText, (int)size, output);
 
   /* convert the result back to char[] */
-  char outText[res];
+  char *outText = (char *)malloc(res);
   for(int y=0; y<(res); y++) {
     outText[y] = output[y];
   }
 
+  free(output);
+  
   /* return the crypted string */
-  if (res >= 0) {
-    return string(outText, res);
+  if(res >= 0) {
+    string text = string(outText, res);
+    free(outText);
+    return text;
   }
   else {
     cerr << "Failed to encrypt: " << error(res) << "!" << endl;
@@ -113,18 +117,23 @@ string cipher::decrypt(const string& source) {
   rijn.init(Rijndael::CBC,  Rijndael::Decrypt, key, Rijndael::Key32Bytes);
 
   /* decrypt the source */
-  unsigned char output[size];
+  unsigned char *output = (unsigned char *)malloc(size);
   int res = rijn.padDecrypt(cryptedText, (int)size, output);
 
   /* convert the result back to char[] */
-  char outText[res];
+  char *outText = (char *)malloc(res);
   for(int y=0; y<(res); y++) {
     outText[y] = output[y];
   }
 
+  free(output);
+  
   /* return the decrypted string */
-  if (res >= 0)
-    return string(outText, res);
+  if (res >= 0) {
+    string text = string(outText, res);
+    free(outText);
+    return text;
+  }
   else {
     cerr << "Failed to decrypt: " << error(res) << " (passphrase invalid?) !" << endl;
     exit(1);

@@ -58,9 +58,10 @@
 #include <string>
 
 extern "C" {
+#include "platform.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <pcre.h>
+#include <pcre2.h>
 }
 
 #ifdef HAVE_BERKELEY
@@ -74,8 +75,7 @@ extern "C" {
 #endif
 #endif
 
-#include "platform.h"
-#include DB_CXX_HEADER
+#include <db_cxx.h>
 
 #else
 

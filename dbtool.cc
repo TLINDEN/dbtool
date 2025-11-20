@@ -127,7 +127,6 @@ int main(int argc, char *argv[]) {
 
 
 string readpass() {
-  char *pass;
   char *envpass;
   envpass = getenv(PW_VARNAME);
   if(envpass != NULL) {
@@ -136,7 +135,7 @@ string readpass() {
   }
   else {
 #ifdef HAVE_GETPASS
-    pass = getpass("passphrase: ");
+    char *pass = getpass("passphrase: ");
     string password = pass;
     free(pass);
 #else
